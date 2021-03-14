@@ -211,7 +211,6 @@ Phase-6
 # Show all the files with content difference that are modified as part of a commit.
 git show <SHA-VALUE>
 
-
 # List only files that are committed as part of a revision.
 	$ git diff-tree --no-commit-id --name-only -r <SHA-VALUE>
 
