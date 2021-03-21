@@ -248,6 +248,9 @@ Phase-7
 # List all remote branches
 	$ git branch -r
 
+# Merge files from source branch to target branch
+	$ git merge <source-branch-name>
+
 # HEAD
 HEAD is a pointer in git which
 	- Always points to the latest commit in the repository
