@@ -44,9 +44,9 @@ Creating remote repository in github
 	https://github.com/swapnilmahajan-git/DevOps_Classes.git
 
 4. Clone the source code from remote repository using 'git clone' command
-	$ git clone https://github.com/swapnilmahajan-git/DevOps_Classes.git
+	$ git clone https://github.com/anuragmah-git/Devops-March-batch-1.git
 
-5. 	$ cd DevOps_Classes 
+5. 	$ cd Devops-March-batch-1 
 
 6. Create some sample code and submit the code to remote repo.
  
@@ -62,12 +62,13 @@ Creating remote repository in github
 
 #
 Git Commit structure
+	commit id
 	User/Email
 	Timestamp
 	Commit message
 	
 #
-SHA / Version / Revison
+SHA / Version / Revison /commit id 
 
 #
 Setting up mandatory configurations:
@@ -81,7 +82,7 @@ Check the configurations using below command
 $ git config --list
 
 Git stores all configurations in below file
-"/home/swapnil/.gitconfig"
+"cd /home/swapnil/.gitconfig"
 
 
 =========
@@ -136,9 +137,9 @@ Phase-3
 	$ git log <filename>
 
 
-======
-Phase-4
-======
+========
+Phase-4 
+========
 # History - Deep Dive
 	$ git log <filename>
 	$ git log
@@ -214,7 +215,74 @@ git show <SHA-VALUE>
 # List only files that are committed as part of a revision.
 	$ git diff-tree --no-commit-id --name-only -r <SHA-VALUE>
 
+=======
+Phase-7
+=======
 
+# BRANCHING
+	A. What is a branch?
+	B. Why and When we create a branch?
+	C. Branching Stratogy overview
+
+
+# List all the branches
+	$ git branch
+	
+# Creating a new branch
+	$ git branch new_branch_name
+
+# List all remote branches
+	$ git branch -r
+
+# Switching to a newly created branch
+	$ git checkout new_branch_name
+
+# Creating and switching to a newly created branch
+	$ git checkout -b new_branch_name
+
+# First push newly created branch into remote repo
+	$ git push --set-upstream <repository-name> <branch-name>
+		or
+	$ git push -u origin --all
+
+# List all remote branches
+	$ git branch -r
+
+# HEAD
+HEAD is a pointer in git which
+	- Always points to the latest commit in the repository
+	- Always points to tip of the current reposiotory
+	- Always points to parent of the next commit
+
+
+# Cherry-pick
+ 
+If we want to merge specific command from another branch in base branch that time we can use the following command
+$ git cherry-pick <SHA-VALUE>
+
+
+# rebase
+   - We have two branches master and feature
+   - First time in master branch two files m1,m2, on the base of this branch we created a feature branch,
+     now in this branch same   files m1,m2 and one new file f1 this file is created in feature branch, 
+   - but after creation of feature branch someone push one more file i.e m3 in master branch, but our feature branch base is m2.
+   - But, I want continue my work in feature branch so we created one more file ie. f2 in feature branch.
+   - so see following steps :
+	$ git branch 
+           - master (m1,m2,m3)
+  	   - feature* (m1,m2, f1,f2) feature branch is created based on m2, so feature branch base is m2. 
+	     so we need to change base of the feature branch, then use below command.
+	$ git rebase master (apply this command in feature branch)
+            - now in feature branch has five file ie. (m1,m2,m3,f1,f2) now base of feature branch is m3. 
+	      now we want feature branch data in master branch, then use below command
+        $ git checkout master 
+        $ git rebase feature (feature branch changes come into master branch)
+
+# How do you restore a deleted file? Or previous changes of a file?
+
+	1.) - $ git log --diff-filter=D --summary (get SHA-value of deleted file using this command.)
+	2.) - $ git checkout $commit <SHA-VALUE>~1 <filename>
+	3.) - $ git status (file present in stage area)
 
 
 
