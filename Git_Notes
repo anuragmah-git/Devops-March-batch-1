@@ -172,7 +172,6 @@ Phase-5
 
 	$ git diff  089871935..fc894a6bf6d2e (if we want to see difference between two files)(use commit ids).
 
-
 2. Deleting a file
 
 	A.) $ git rm <filename>
@@ -257,6 +256,140 @@ HEAD is a pointer in git which
 	- Always points to tip of the current reposiotory
 	- Always points to parent of the next commit
 
+
+========
+Phase-8
+========
+Merging:
+=========
+# FAST-FORWARD MERGE
+
+BEFORE MERGE:
+-------------
+			master
+			 |
+----C1--C2---C3
+			 |
+			 ----------C4----C5  
+								dev_1.2.3
+		
+AFTER MERGE:
+-------------
+ 			     			master
+			     			  |
+----C1----C2---C3------C4----C5
+		             		  	  |
+			     			dev_1.2.3
+
+
+Excercise:
+===========
+# List all the branches
+	$ git branch
+
+# Create a new branch
+	$ git branch <new-branch>
+
+# Add some changes to newely created branch i.e <new-branch>
+	$ Modify/Add some files	
+	$ git add	
+	$ git commit 
+
+# Now merge the code from <new-branch> to master branch
+  Before merge, make sure that you are on target branch i.e master (source branch: dev_1.2.3)
+	$ git checkout master
+
+# You have master code in source since currently checkout branch is master. Now bring/merge the changes from <new-branch> to master by running below command. 
+Git merge command merges the changes from <new-branch> to master.
+Verify the chages.
+	$ git merge <new-branch>
+
+# Observce the changes from dev_1.2.3 into master branch.
+
+# git push
+
+
+MERGING W/ CONFLICT: (It is called as Real-Merge)
+=================
+
+# List all the branches
+	$ git branch
+
+# Create a new branch
+	$ git branch dev_1.2.3
+
+
+# Take a file which is common in master and dev_1.2.3 branch.
+  ex: Login.java
+
+# Make sure Login.java has below content in master and dev_1.2.3 branch
+	Login.java
+		line#5 --> int a = 10;
+	
+# To create a conflict situation, we need to modify same line in two branches with different content.
+
+	ex: Login.java (master)
+			line#5 --> int a =100;
+
+# If your data in working or stage area then, Before entring to new branch apply below command
+	$ git stash 
+	$ git checkout new-branch-name
+	$ git stash pop
+	$ git merge new-branch-name
+
+		Login.java (dev_1.2.3)
+			line#5 --> int a = 200;
+
+
+# Now merge the code from dev_1.2.3 to master branch
+  Before merge, make sure that you are on target branch i.e master (source branch: dev_1.2.3)
+	$ git checkout master
+
+# You have master code now, since currently checkout branch is master. Now bring/merge the changes from dev_1.2.3 to master by running below command. 
+Git merge command merges the changes from dev_1.2.3 to master.
+
+	$ git merge dev_1.2.3
+
+# Run git status command to list conflict file
+
+# Resolve the conflict and commit the merge
+
+# Run git push command to move the merge to Remote.
+
+
+# What is Conflict:
+If two users modify the same file in source and target branches and if the same line has different content, git can't decide which user's code it has to take. we call this situation as conflict.
+
+# How do you resolve the conflict: 
+- Open the conflict file--> remove conflict markers-->select the right content. (<<<<<<<<   >>>>>>>>>)
+- git add
+- git commit
+- git push
+
+
+#	
+git remote
+	PULL
+	FETCH
+	PUSH
+	CLONE
+
+Store credentials:
+$ git config credential.helper store
+
+# If we want to delete branch locally use below command
+$ git branch -d <branch-name>  (after delete branch please copy that id for recover ex.(06e9029))
+
+# If we want to delete branch locally focefully use below command
+$ git branch -D <branch-name>
+
+# If we want to delete remote branches use below command
+$ git push -u origin --delete <branch-name>
+		or
+$ git push origin --delete <branch-name>
+
+# If you want to recover local branches then use below command
+$ git branch <branch-name> <deleted-branch-id>
 
 # Cherry-pick
  
