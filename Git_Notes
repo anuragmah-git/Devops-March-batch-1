@@ -199,10 +199,10 @@ Phase-6
 # Unstage the changes from STAGE area
 	$ git reset HEAD <filename>
 
-# move changes from .git to source area 
+# Move changes from .git to source area 
 	$ git reset --mixed HEAD~1
 
-# move changes from .git to stage area
+# Move changes from .git to stage area
 	$ git reset --soft HEAD~1
 
 # Remove changes from everywhere
@@ -391,8 +391,10 @@ $ git push origin --delete <branch-name>
 # If you want to recover local branches then use below command
 $ git branch <branch-name> <deleted-branch-id>
 
+# How do you clone the particular branch?
+$  git clone -b <branch_name> --single-branch <git_repo_url>
+
 # Cherry-pick
- 
 If we want to merge specific command from another branch in base branch that time we can use the following command
 $ git cherry-pick <SHA-VALUE>
 
