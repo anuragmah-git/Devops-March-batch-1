@@ -346,7 +346,7 @@ MERGING W/ CONFLICT: (It is called as Real-Merge)
 	$ git checkout master
 
 # You have master code now, since currently checkout branch is master. Now bring/merge the changes from dev_1.2.3 to master by running below command. 
-Git merge command merges the changes from dev_1.2.3 to master.
+Git merge command merges the changes from new-branch to master.
 
 	$ git merge dev_1.2.3
 
@@ -375,7 +375,7 @@ git remote
 	CLONE
 
 Store credentials:
-$ git config credential.helper store
+$ git config credential.helper store 
 
 # If we want to delete branch locally use below command
 $ git branch -d <branch-name>  (after delete branch please copy that id for recover ex.(06e9029))
