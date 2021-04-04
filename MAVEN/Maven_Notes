@@ -42,7 +42,7 @@ Load .bashrc using below command or open new ternimial
  
 Verify Installation
 	$ java -version
-	$ mvn --version
+	$ mvn --version or mvn -v
 
 
 ============
@@ -90,9 +90,9 @@ pom.xml  - Maven's build file using which we can
 
 
 #7
-Creating a Java Project using Maven:
+Creating a Java Project using Maven: (It is for standlone project)
 
-$ mvn archetype:generate -DgroupId=com.flipkart -DartifactId=flipkart -Dversion=1.0-SNAPSHOT -DinteractiveMode=false
+$ mvn archetype:generate -DgroupId=com.amazon -DartifactId=amazon -Dversion=1.0-SNAPSHOT -DinteractiveMode=false
 (Note :- For creating Maven project we need GAV parameter).
 
 
@@ -122,7 +122,7 @@ Execute "mvn install":
 		creates jar/war.
 	- install
 		copy built artifacts i.e jar/war file into local repository $USER_HOME/.m2 
-               	(for ex. cd /home/swapnil/.m2/repository/com/flipkart/flipkart/1.1-SNAPSHOT$ my war file in this repository do ls after this path we will see the war/jar file                			(gamutkart-1.1-SNAPSHOT.war))
+               	(for ex. cd /home/swapnil/.m2/repository/com/amazon/amazon/1.1-SNAPSHOT$ my war file in this repository do ls after this path we will see the war/jar file                			(amazon-1.1-SNAPSHOT.war))
 
  (Note :- 1). After mvn install target folder is created in project directory.
 	  2). mvn install command is used for compiles the code. )
