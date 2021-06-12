@@ -176,7 +176,7 @@ sudo docker run -i -t or -it ubuntu /bin/bash
 - There are different types of Shell
   1) bash
   2) ksh
-  3) csh
+  3) csh/bin/bash
   4) sh 
  so many different shells are present.
    
@@ -199,7 +199,7 @@ Shotdown a container
 
 
 # See longer UUID of the container 
-	$ docker ps -a --no-trunc -q"
+	$ docker ps -a --no-trunc -q
 
 # show the last container which you have created(stopped/running)
 	$ sudo docker ps -l
@@ -207,7 +207,7 @@ Shotdown a container
 # Naming the container
 	$ docker run --name demoname -it ubuntu /bin/bash
 
-# How to create multiple container in one command (creating container in background mode)
+# How to create multiple running container in one command (creating container in background mode)
         $ docker run -it -d --name <container-name> ubuntu /bin/bash
         	-d is daemon mode, means container run in background mode, without -d you will get new terminal and with -d container create in background mode
 
@@ -280,6 +280,64 @@ $ passwd password
 	
 - Connect to the container using ssh
 $ ssh username@<Container-ip>
+
+=========
+DAY-3:
+=========
+	# Inspecting the container's processes from host machine
+	- docker top <container-name>
+
+
+# Stoping a container from 'host machine'
+	- docker stop <container-name>
+	- docker stop <container-id> (like that ee319cddd42e)(SIGTERM)
+	- docker kill <container-name> (SIGKILL)
+
+# Show last 4 containers (stopped/running)
+	- docker ps -n4
+
+# Pause containers
+	- $ docker pause <container-name or ids>
+
+# Un-pause containers
+	- $ docker unpause <container-name or ids>
+
+
+# Find More About The Container
+- docker inspect comamnd "interrogates" the container and returns the info like.. configuration info, names, commands, n/w configurations, stopped/running ..etc.
+	---------        -------------                                            ------------------  -----  --------  ------------------  ---------------	 
+	 Examples:
+	$ docker inspect <container-name or ids> 
+		Note :- This command shows info about container.
+
+	$ sudo docker inspect <container-name or ids> | grep IPAddress | tail -1 
+		Note :- This command shows IPAddress of the running container.(EX. "IPAddress": "172.17.0.2", If we want to remove special character then use below command).
+
+	$ sudo docker inspect <container-name or ids> | grep IPAddress | tail -1 | cut -d ':' -f2 | tr -d ' |,|"'
+		Note :- This command shows IPAddress of the running container using multiple command append in one command using (|) pipe symbol.
+	
+	$ sudo docker inspect <container-name or ids> -f '{{.NetworkSettings.Networks.bridge.IPAddress}}'
+		Note :- This is main command to show IPAddress of the running container.
+
+	$ sudo docker inspect --format '{{.Config.Hostname}}' <container-name>
+		Note :- If we want to see containers hostname then use above command.
+
+	$ sudo docker inspect -f '{{.NetworkSettings.Networks.bridge.IPAddress}}' `sudo docker ps -q`
+		Note :- This command shows IPAddress of all running containers.
+
+	$ sudo docker inspect -f '{{.Name}}' `sudo docker ps -a -q`
+		Note :- This command shows only name of all containers.
+
+	$ docker inspect --format='{{.Name}}' $(docker ps -aq --no-trunc) | cut -c2- 
+		Note :- 1).This command shows name of container (ex. /<container-name>). If we want to remove slash(/) from container name then use this command.
+			2). -c2- gives you container name without slash (/) (ex.<container-name>)
+			3). -c2 gives you first character of container name.(ex. c)
+   	Note: use --format (OR) -f  	
+
+
+- Remove all running containers
+		docker rm -f `docker ps -q`
+
 
 
 
