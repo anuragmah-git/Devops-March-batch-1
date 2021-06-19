@@ -588,6 +588,40 @@ Docker Image layers
 		Kernel
 
 
+DAY-8:
+
+# Docker PORT mapping
+------------------------------
+1. Create one container like nginx container using port mapping
+ $ docker run -d -it --name portmappingcon -p 3600:80 swapnilhub/evenginximg /bin/bash
+2. Check the port is listening or not
+ $ netstat -nltp 
+3. ifconfig on localhost terminal and check ip and apply below command on browser
+ $ localhost-ip:3600
+
+# Docker diff command
+----------------------------
+1. If we want to check changes in container configuration filesystem that time we will apply below command
+ $ docker container diff <id or name of container>
+2. create new container and apply diff command on newly created container, then that contaner is empty
+3. apply watch commmand on newly created container and create any thing in that container
+ $ watch 'docker container diff <id or name of container>'
+
+# Export/Import docker container
+-----------------------------------
+Suppose we have one container with s/w installation and we want give that container to other team member that time we will use that export and import 
+1. create new container and install required s/w in the newly created container
+ $ docker run -it --name <container-name> <image-name> /bin/bash
+2. now apply export commnad from localhost terminal and store a container into one tar file using below command
+ $ docker container export container-name >file.tar
+		or
+ $ docker container export container-name -o file.tar
+3. check tar file is created or not 
+ $ ls -lh
+4. now use import command to create new container using that tar file, but before that we need create image from that tar file using below command
+ $ docker image import tarfilename.tar <giveimage-name>
+ $ docker images
+ $ docker run -it --name <container-name> <new-iamge-name-from-tar file created image>
 
 
 
