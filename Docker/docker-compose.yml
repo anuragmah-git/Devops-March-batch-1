@@ -1,0 +1,11 @@
+version: '3'
+services:
+ webapp3:
+   image: nginx
+   ports: 
+     - "8000:80"
+ 
+ webapp4:
+   image: nginx
+   ports: 
+     - "8001:80"

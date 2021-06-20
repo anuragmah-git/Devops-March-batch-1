@@ -1,0 +1,92 @@
+# What is Docker compose
+
+	Docker compose
+	--------------
+		- Compose is a tool for defining and running multi-container Docker applications. 
+		  With Compose, you use a YAML file to configure your application’s services. Then, with a single command, 
+		  you create and start all the services from your configuration.
+		- tool for defining & running multi-container docker applications
+		- use yaml files to configure application services (docker-compose.yml)
+		- can start all services with a single command : docker compose up
+		- can stop all services with a single command : docker compose down
+		- can scale up selected services when required : --scale <service-name>=4
+
+# Installation Steps
+====================
+
+Step.1) Check it is already installed or not using below command.
+ 
+	- $ docker-compose -v
+
+Step.2) Install docker-compose on Linux machine
+  
+  	# sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+Step.3) Apply executable permissions to the binary:
+	
+	# sudo chmod +x /usr/local/bin/docker-compose
+
+Step.4) Create docker compose file at any location on your system
+	
+	- $ touch docker-compose.yml
+Note - After creating a compose file check the compose file reference in docker compose reference documentation in the compose file reference.
+
+Step.5) Write a databse services in the yml file,  see below ex.
+
+	- vim docker-compose.yml
+		
+		services:
+
+		  containername:
+		          image: nginx
+
+		  containername:
+		    	  image: redis
+
+Step.6) Check the validity of file by command
+	
+	- $ docker-compose config
+
+      => If you got Invalid Error then add version in the file, see below ex.
+
+		version: '2'
+
+		services:
+
+		  web:
+		    image: nginx
+
+		  database:
+		    image: redis
+ 
+
+Step.7) Run docker-compose.yml file by command
+   	
+	- $ docker-compose up -d (Note: -d is use for running in backgroud mode)
+
+
+Step.8) Bring down application by command
+   	
+	- $ docker-compose down
+
+Step.9) If you give any other name to docker compose file and you want to run or delete the created content then use below command.
+	
+	- $ docker-compose -f compose-file-name.yml up -d
+	- $ docker-compose -f compose-file-name.yml down
+
+Note - you can write this file in json format also and after that, just save file in the .json extension and run the file using same command.
+
+
+
+# How to scale services using docker-compose
+
+	—scale
+		$ docker-compose up -d --scale containername=4
+
+	(Note- --scale:- It is command for scaling
+	       =4 :- It creates 4 database containers for one application using one server.)
+
+
+
+
+
