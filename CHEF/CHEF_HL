@@ -1,0 +1,181 @@
+		Chef - configuration management tool
+	=============================================
+DAY-1:
+# What is Chef / Configuration mgmnt tool applications, goals.	
+
+	- Chef is an automation platform that configures and
+	  manages the infrastructure.
+	  
+	- Manually built infrastructure becomes hard to 
+	  understand and modify. People tend to fear for 
+	  implementing a change.
+			  
+	- Chef helps us to handle changes or change management
+	  in a systematic fashion efficiently. so we can 
+	  ensure that a system is configured in a correct and 
+	  reliable manner.
+	
+	- When servers are build manually, it's not easy
+	  to build them from scratch. Using Chef, Servers can 
+	  be reproduced easily.
+
+	- Enables infrastrucute as a code.
+	
+	- Chef can automatically detect the faults and repair 
+	  them.
+	  
+
+# Advatages of CM Tool
+-----------------------
+-> Complete automation
+-> Increase uptime 
+-> Improve performance
+-> Ensure compilence 
+-> prevent error
+-> reduce cost
+
+
+ChefDK Installation:
+===================
+1. Download "Chef Development Kit" (Chefdk/CDK)
+	chefdk_1.3.43-1_amd64.deb
+
+2. Install the debian package using
+	sudo dpkg -i chefdk_1.3.43-1_amd64.deb
+
+3. Verify the installation
+	$ chef --version
+
+Chefdk uninstallation:
+========================
+dpkg --list | grep chefdk
+sudo dpkg -P chefdk
+
+
+DAY-2:
+Chef Syntax:
+============
+#
+- By convention, files that contain chef code have the extension ".rb"
+- The chef coding language is Ruby DSL. Ruby DSL is just a
+	subset of Ruby.
+
+- Using recipe, you just specify "WHAT" disired configuration need to be present in a machine; rather than "HOW" it should be accomplished.
+
+
+Recipe Syntax:
+===============
+	resource 'NAME' do
+	    parameter1  'value1'
+	    attibute2   value2
+		property3   value3
+	end
+
+# Simplest form of Chef recipe code.
+ -----------------------------------
+	file 'deployment.txt' do
+	  content 'deployment is succusful!'
+	  mode "755"
+	end
+------	
+	--> file - Is called as a Resource. 
+		 - The file resource is used to manage a file on a computer. 
+	--> deployment.txt - name_attribute/value for that resource.
+			   - It can be a single quote or double quote.
+	--> do - is a clause, denotes the start of a block.
+	--> end - is closing pair for do.
+	--> content - is called as attribute/parameter/property of "file" resource.
+	--> indentation - two spaces.
+
+#What is Resource:
+	- Resources are building blocks used to define specific parts of infrastructure.
+	- Resource defines actions for Chef to perform.
+
+		
+#
+Chef Concept: Tell WHAT, Not HOW.
+	
+	Resources+Attributes = Recipe --> Chef:
+							   WHAT do I care about?
+										|
+							  Decides HOW & Performs Actions
+
+
+- Chef refers recipe and decides how to put the machine in
+	desired configuration by reasoning about the current
+	state of the system(Idompotency).
+
+	As opposed to shell/any scripting where we write 1000 of lines of code(HOW part), in Chef, you just specify "WHAT" not "HOW".
+
+
+DAY-3:
+# Commonly used Chef resources
+	- file
+	- user
+	- cron
+	- directory
+	- package
+	- apt-update
+	- template
+
+
+# Roll back : Tell Chef what not to do.
+	file "deployment.txt" do
+	  action :delete
+	end 
+
+- :delete is called "symbol".
+
+#
+Chef in production environment:
+===================
+Chef Architecture:
+	workstation
+	chef server
+	node
+	knife
+	chef-client
+================
+workstation: is the computer(typically your machine) where you write your cookbooks and administer your network.
+
+Chef server: Central repository that contains the cookbooks you write and information about every node it manages.
+
+Node: is a computer that is managed by a chef server. ex: computer in your QA/Prod environments.
+
+Knife:  Knife command enables us to communicate with Chef 
+		server from workstation.
+		Knife is an interface between your workstation and 
+		Chef server.
+		Using knife, we can upload cookbooks to the server,
+		and work with node.
+
+
+Hosted Chef server setup:
+============================
+1. Sign up for hosted Chef (https://manage.chef.io/login)
+2. Create an organization/Project	
+	Go to Administration --> Organizations --> Create --> Project name.
+
+Work station Setup:
+======================
+	1. create a project directory "chefproject/.chef"
+
+	2. configure knife to talk to Chef server
+	knife requires two files to talk to the Chef server
+		1. username.pem (RSA private key ) (ie. click on Users-->click on username-->click on Reset key-->Download)
+		2. knife.rb (knife configuration file) (ie. click on project-->click on Generate Knife config)
+	
+	3. Generate these two files from 'hosted Chef server' and place them under "chefproject/.chef"
+		(Note :- directory to establish the connection between your workstation and the chef server.)
+	
+	4. How do you generate knife.rb & username.pem files from chef server?
+	- Generate knife.rb: 
+			Administration--> click on organization-->generate knife config
+	- Generate username.pem: 
+			Administration--> Users --> click on your Username --> "Reset key"
+
+	5. Validate Chef server conection from workstation:
+	$ knife ssl check
+
+	6. Now you are ready to write cookbooks in your workstatin and upload the same to the server.
+
