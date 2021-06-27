@@ -179,3 +179,62 @@ Work station Setup:
 
 	6. Now you are ready to write cookbooks in your workstatin and upload the same to the server.
 
+
+Write Cookbook:
+=================
+	# Usually cookbooks goes into 'cookbooks' folder
+			(Note:- Take project name from chef-server i.e in organization Short-name)
+		$ mkdir <project-name>/cookbooks
+		$ cd cookbooks
+
+	#Clone a sample cookbook from git hub.
+		$ git clone <repo url>
+	
+			OR
+
+	#generate a cookbook in cookbook folder
+		$ chef generate cookbook <cook-book-name>
+
+	#Upload your cookbook:
+			(Note- take cookbook name from cookbooks folder)
+		$ knife cookbook upload <cook-book-name>
+
+	# Check 
+		$ knife cookbook list
+
+
+Bring up the Ubuntu "Node":
+================================
+	1)Write a Dockerfile to create a docker conatiner(i.e Node)
+		Take the Dockerfile 
+
+	2)create docker image using
+		$ docker build -t="dockerhub-username/image-name" .
+
+	3)Create a node (container) from the above image using below command		
+		$ docker run --name <give_any_name> -d -it <dockerhub_username/image-name> /bin/bash
+
+
+5)
+Bootstrap the node:
+	- The bootstrap process connects workstation to your node over SSH.
+
+		$ knife bootstrap 172.17.0.2 --ssh-user <username> --ssh-password '<password>' --sudo --use-sudo-password --node-name <specify node name> --run-list 'recipe[cookbook_name]'	 
+			(Note:- we are not using this command in real time insted of we use role concept)
+		
+	- Bootstrap performs below steps:
+		1. Installs chef-client in node.
+		2. Associates the node to Chef server.
+	 	3. Downloads given cookbook from Chef servers and executes it.
+	       		(i.e learn_chef_apache2).
+
+	To verify, run below commands..
+		$ knife node list (how nodes are created)
+
+	 	$ knife node show <node_name> (view data about the node)
+
+	TESTING: "learn_chef_apache2(this is cookbook_name)" Cookbook implementation In the node.
+		http://172.17.0.2:80
+
+
+
