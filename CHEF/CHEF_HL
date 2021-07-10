@@ -236,5 +236,151 @@ Bootstrap the node:
 	TESTING: "learn_chef_apache2(this is cookbook_name)" Cookbook implementation In the node.
 		http://172.17.0.2:80
 
+DAY-6:
+# ROLES: (In real-time we need to configure cookbooks to multiple server, we follow this concept i.e Role)
+===========
+	- You can catergorize your machines logically using roles concept.
+		This role concept describes what cookbooks need to be executed in a node.
+
+	- Use Roles to implement a specific set of cookbooks that can be run in a specific set of machines.. 
+	  for ex: Database machines, Web servers, Application servers..etc.
+
+	- Using Role, we define node's run-list.
+
+	- Run-list: List of recipes / cookbooks.
+		(Ex. "run_list": ["recipe[cookbook_name]", ....)
+
+
+
+Creating Roles:
+================
+	High level Notes:
+	 1 Create a role in your workstation
+	 2 Attach recipes/cookbooks to the Role
+	 3 Upload the Role to Chef server
+	 4 Attach Role to the node
+	 5 Run chef-client in the node
+
+	Step.1) Create roles directory:
+		$ mkdir <organization_name from chef-server(ie. short_name)>/roles
+
+	Step.2) Define roles using json format:
+		  $ vim nexamatic99/roles/web.json
+					   |
+					   |
+			  Example:- Role= web (Role_name)
+					  cookbook= <any cookbook_name>
+					  Node(container)= <specify node name>
+			-------------------------------------------------
+
+	Step.3) Upload Roles to chef server:
+				(Note:- Upload web.json file from workstation to chef-server using below command)
+			$ knife role from file roles/web.json 
+ 
+	Step.4) Set run-list to our node / Set Role to our node / Attache the node to role
+			$ knife node run_list set <node-name> "role[web]" --> Add the node to a Role
+
+	Step.5) Login to the node and initialte "chef-run" manually.
+				(Note- If you are not in root then use sudo before chef-client command)
+		  	$ chef-client
+
+
+	- View commands - 
+
+	Step.6) Check if Role is created on your Chef server:
+			$ knife role list
+
+	Step.7) Check the Roles details / recepies attached to the role:
+			$ knife role show <role_name> (Note :- Take role name from web.json file from role directory)
+
+	Step.8) Remove the node from the Role
+			$ knife node run_list remove <Node_name> role[web] --> Remove the node from a Role
+
+	Step.9) Check the run-list of our node:
+			$ knife node show <node-name> --run-list
+
+
+Creating Cookbooks:
+====================
+	Step.1) Create a cookbook called 'nginx' in cookbooks directory (Note:- 'nginx' is cookbook name)
+		   $ chef generate cookbook nginx
+
+	Step.2) $ cd cookbooks/nginx
+
+	Step.3) $ cd recipesvim 
+		$ <cookbook_name>.rb (write a recipe)
+
+Recipe code:
+---------------
+	execute "run apt-get update command" do
+	  command "apt-get update"
+	end
+
+	package "nginx" do
+	  action :install
+	end
+
+	cookbook_file "/var/www/html" do
+	  source "index.html"
+	end 
+
+	execute "this command will start nginx server" do
+	  command "service nginx start"
+	end
+------------	
+
+	Step.4) Place our application code in below directory for deployment
+		cd cookbooks/nginx/files/default
+		vim index.html
+			index.html code:
+			------------
+			<html>
+			   <body>
+			     <h1 style="color:red;">Online Training Portal</h1>
+			</body> 
+			</html>
+-----------------------
+
+	Step.5) upload the cookbooks from workstation to chef-server using below command	
+    			$ knife cookbook upload nginx
+
+	Step.6) Bootstrap the node [create connection between node(container) to chef-server] using below command
+			$ knife bootstrap <container_IPaddress> --ssh-user <username> --ssh-password '<password>' --sudo --use-sudo-password 
+			  --node-name <specify node name> --run-list
+
+	Step.7) Create a ROLE (add role name, cookbook name in web.json roles configuration file) (Refer roles concept above)
+
+		7.A)Add 'node-name' node to the role using below command
+			$ knife node run_list set node-name role[web] 
+
+	Step.8) Run below comamnd in the node for implementing the cookbook
+			$ sudo chef-client
+	
+	Step.9) Testing nginx cookbook implementation. If everything goes fine, 
+		nginx will be configured in the node and we can test our application deployed in the  server by hitting the server. Run below in your browser..
+
+				http://172.17.0.2:80
+
+
+#Running chef-client command from all servers:
+=========
+	- use crontab
+	- use shell scripts
+
+
+DAY-7:
+CLEANUP:
+======
+	# Delete the node from the Chef server
+		$ knife node delete node-name --yes
+
+	# Delete your cookbook from the Chef server
+		$ knife cookbook delete cookbook-name --all --yes
+
+	# Delete the role from the Chef server
+		$ knife role delete role-name --yes
+
+
+
 
 
